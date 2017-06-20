@@ -25,7 +25,6 @@ function downloadYue(version, filename, target, token) {
             const unzipper = new DecompressZip(filename)
             unzipper.on('extract', () => {
               fs.unlinkSync(filename)
-              updateRepo(`Update docs for ${version}`)
               resolve()
             })
             unzipper.on('error', () => {
