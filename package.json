@@ -1,0 +1,15 @@
+{
+  "name": "download-yue",
+  "version": "1.0.0",
+  "description": "Download releases of Yue",
+  "repository": "https://github.com/yue/download-yue",
+  "author": "Cheng Zhao",
+  "license": "MIT",
+  "dependencies": {
+    "decompress-zip": "0.0.4",
+    "github-releases": "0.3.2"
+  },
+  "engines": {
+    "node": ">=7"
+  }
+}
