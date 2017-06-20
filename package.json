@@ -5,6 +5,10 @@
   "repository": "https://github.com/yue/download-yue",
   "author": "Cheng Zhao",
   "license": "MIT",
+  "main": "download-yue.js",
+  "bin": {
+    "download-yue": "download-yue.js"
+  },
   "dependencies": {
     "decompress-zip": "0.0.4",
     "github-releases": "0.3.2"
