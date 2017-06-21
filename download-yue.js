@@ -27,9 +27,8 @@ function downloadYue(version, filename, target, token) {
               fs.unlinkSync(filename)
               resolve()
             })
-            unzipper.on('error', () => {
-              fs.unlinkSync(filename)
-              reject('error')
+            unzipper.on('error', (error) => {
+              reject(error)
             })
             unzipper.extract({path: target})
           }).on('error', (error) => {
