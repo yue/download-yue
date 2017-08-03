@@ -5,39 +5,41 @@
 // LICENSE file.
 
 const fs = require('fs')
-const GitHub = require('github-releases')
+const https = require('https')
 const DecompressZip = require('decompress-zip')
+
+function downloadLink(link, callback) {
+  https.get(link, (res) => {
+    if (res.statusCode == 302)
+      return downloadLink(res.headers.location, callback)
+    if (res.statusCode != 200)
+      return callback(new Error(`Release not found: ${res.statusCode}`))
+    callback(null, res)
+  }).on('error', (error) => {
+    callback(error)
+  })
+}
 
 function downloadYue(version, filename, target, token) {
   return new Promise((resolve, reject) => {
-    const github = new GitHub({repo: 'yue/yue', token})
-    github.getReleases({tag_name: version}, (error, releases) => {
+    const link = `https://github.com/yue/yue/releases/download/${version}/${filename}`
+    downloadLink(link, (error, stream) => {
       if (error)
         return reject(error)
-      for (const asset of releases[0].assets) {
-        if (asset.name != filename)
-          continue
-        github.downloadAsset(asset, (error, stream) => {
-          if (error)
-            return reject(error)
-          // Unzip it.
-          stream.pipe(fs.createWriteStream(filename)).on('finish', () => {
-            const unzipper = new DecompressZip(filename)
-            unzipper.on('extract', () => {
-              fs.unlinkSync(filename)
-              resolve()
-            })
-            unzipper.on('error', (error) => {
-              reject(error)
-            })
-            unzipper.extract({path: target})
-          }).on('error', (error) => {
-            reject(error)
-          })
+      // Unzip it.
+      stream.pipe(fs.createWriteStream(filename)).on('finish', () => {
+        const unzipper = new DecompressZip(filename)
+        unzipper.on('extract', () => {
+          fs.unlinkSync(filename)
+          resolve()
         })
-        return
-      }
-      return reject(new Error(`${filename} not found in ${version} release`))
+        unzipper.on('error', (error) => {
+          reject(error)
+        })
+        unzipper.extract({path: target})
+      }).on('error', (error) => {
+        reject(error)
+      })
     })
   })
 }
@@ -49,6 +51,10 @@ if (module === require.main) {
   }
   const token = process.env.GITHUB_TOKEN
   downloadYue(process.argv[2], process.argv[3], process.argv[4], token)
+  .catch((error) => {
+    console.error('Downloading failed:', error.message)
+    process.exit(2)
+  })
 }
 
 module.exports = downloadYue

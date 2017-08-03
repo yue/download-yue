@@ -1,6 +1,6 @@
 {
   "name": "download-yue",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Download releases of Yue",
   "repository": "https://github.com/yue/download-yue",
   "author": "Cheng Zhao",
@@ -10,8 +10,7 @@
     "download-yue": "download-yue.js"
   },
   "dependencies": {
-    "decompress-zip": "0.0.4",
-    "github-releases": "0.4.x"
+    "decompress-zip": "0.0.4"
   },
   "engines": {
     "node": ">=7"
