@@ -6,7 +6,8 @@
 
 const fs = require('fs')
 const https = require('https')
-const DecompressZip = require('decompress-zip')
+
+const extract = require('./extract-zip')
 
 function downloadLink(link, callback) {
   https.get(link, (res) => {
@@ -28,15 +29,13 @@ function downloadYue(version, filename, target, token) {
         return reject(error)
       // Unzip it.
       stream.pipe(fs.createWriteStream(filename)).on('finish', () => {
-        const unzipper = new DecompressZip(filename)
-        unzipper.on('extract', () => {
+        extract(filename, {dir: target}, (error) => {
           fs.unlinkSync(filename)
-          resolve()
+          if (error)
+            reject(error)
+          else
+            resolve()
         })
-        unzipper.on('error', (error) => {
-          reject(error)
-        })
-        unzipper.extract({path: target})
       }).on('error', (error) => {
         reject(error)
       })

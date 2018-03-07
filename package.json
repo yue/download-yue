@@ -9,9 +9,6 @@
   "bin": {
     "download-yue": "download-yue.js"
   },
-  "dependencies": {
-    "decompress-zip": "0.0.4"
-  },
   "engines": {
     "node": ">=7"
   }
