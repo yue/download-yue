@@ -21,9 +21,9 @@ function downloadLink(link, callback) {
   })
 }
 
-function downloadYue(version, filename, target, token) {
+function downloadYue(project, version, filename, target, token) {
   return new Promise((resolve, reject) => {
-    const link = `https://github.com/yue/yue/releases/download/${version}/${filename}`
+    const link = `https://github.com/yue/${project}/releases/download/${version}/${filename}`
     downloadLink(link, (error, stream) => {
       if (error)
         return reject(error)
@@ -44,12 +44,12 @@ function downloadYue(version, filename, target, token) {
 }
 
 if (module === require.main) {
-  if (process.argv.length != 5) {
-    console.error('Usage: download-yue version filename target')
+  if (process.argv.length != 6) {
+    console.error('Usage: download-yue project tag filename target')
     process.exit(1)
   }
   const token = process.env.GITHUB_TOKEN
-  downloadYue(process.argv[2], process.argv[3], process.argv[4], token)
+  downloadYue(process.argv[2], process.argv[3], process.argv[4], process.argv[5], token)
   .catch((error) => {
     console.error('Downloading failed:', error.message)
     process.exit(2)
