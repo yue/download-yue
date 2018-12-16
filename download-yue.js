@@ -14,7 +14,7 @@ function downloadLink(link, callback) {
     if (res.statusCode == 302)
       return downloadLink(res.headers.location, callback)
     if (res.statusCode != 200)
-      return callback(new Error(`Release not found: ${res.statusCode}`))
+      return callback(new Error(`There is no build for your Node.js version (${res.statusCode}).`))
     callback(null, res)
   }).on('error', (error) => {
     callback(error)
