@@ -1,15 +1,11 @@
 {
   "name": "download-yue",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Download releases of Yue",
   "repository": "https://github.com/yue/download-yue",
-  "author": "Cheng Zhao",
   "license": "MIT",
   "main": "download-yue.js",
   "bin": {
     "download-yue": "download-yue.js"
-  },
-  "engines": {
-    "node": ">=7"
   }
 }

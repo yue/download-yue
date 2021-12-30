@@ -23,7 +23,11 @@ function downloadLink(link, callback) {
 
 function downloadYue(project, version, filename, target, token) {
   return new Promise((resolve, reject) => {
-    const link = `https://github.com/yue/${project}/releases/download/${version}/${filename}`
+    let link
+    if (filename == 'Source code (zip)')
+      link = `https://github.com/yue/${project}/archive/refs/tags/${version}.zip`
+    else
+      link = `https://github.com/yue/${project}/releases/download/${version}/${filename}`
     downloadLink(link, (error, stream) => {
       if (error)
         return reject(error)
